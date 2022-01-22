@@ -18,9 +18,10 @@ func main() {
 
 func setupRoutes(app *fiber.App) {
 	app.Get("/api", welcome)
-	app.Post("/api/Users", routes.CreateUser)
-	app.Get("/api/Users", routes.GetAllUsers)
-	app.Get("/api/Users/:id", routes.GetUserById)
+	app.Post("/api/users", routes.CreateUser)
+	app.Get("/api/users", routes.GetAllUsers)
+	app.Get("/api/users/:id", routes.GetUserById)
+	app.Put("/api/users/:id", routes.UpdateUser)
 }
 
 func welcome(c *fiber.Ctx) error {

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/baijupadmanabhan/golang-fiber-api/database"
 	"github.com/baijupadmanabhan/golang-fiber-api/models"
@@ -64,6 +65,42 @@ func GetUserById(c *fiber.Ctx) error {
 	if err := findUser(id, &user); err != nil {
 		return c.Status(400).JSON(err.Error())
 	}
+
+	responseUser := createResponseUser(user)
+
+	return c.Status(200).JSON(responseUser)
+
+}
+
+func UpdateUser(c *fiber.Ctx) error {
+	var user models.User
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(400).JSON("Please ensure that the :id is integer")
+	}
+
+	if err := findUser(id, &user); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	fmt.Println("User : ", user)
+	type updateUser struct {
+		FirstName string `json:"first_name"`
+		LastName  string `json:"last_name"`
+	}
+
+	var updateData updateUser
+
+	if err := c.BodyParser(&updateData); err != nil {
+		return c.Status(500).JSON(err.Error())
+	}
+
+	user.FirstName = updateData.FirstName
+	user.LastName = updateData.LastName
+
+	fmt.Println("User : ", user)
+
+	database.Database.Db.Save(&user)
 
 	responseUser := createResponseUser(user)
 

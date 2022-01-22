@@ -32,6 +32,11 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/api/product/:id", routes.GetProductById)
 	app.Put("/api/product/:id", routes.UpdateProduct)
 	app.Delete("/api/product/:id", routes.DeleteProduct)
+
+	//Order routes
+	app.Post("/api/order", routes.CreateOrder)
+	app.Get("/api/order", routes.GetOrders)
+	app.Get("/api/order/:id", routes.GetOrderById)
 }
 
 func welcome(c *fiber.Ctx) error {
